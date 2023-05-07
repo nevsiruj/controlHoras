@@ -86,36 +86,59 @@
 import { ref } from 'vue';
 
 export default {
-  props: ['accessKey'],
+  props: ['employee'],
   setup(props) {
     const startDate = ref('');
     const startTime = ref('');
     const endDate = ref('');
     const endTime = ref('');
+    const employeeData = ref({});
 
     const addEmployeeSchedule = async () => {
       try {
-        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            startDate: startDate.value,
-            startTime: startTime.value,
-            endDate: endDate.value,
-            endTime: endTime.value,
-          }),
-        });
-        if (response.ok) {
-          console.log('Horario registrado correctamente.');
-          startDate.value = '';
-          startTime.value = '';
-          endDate.value = '';
-          endTime.value = '';
+        // Consultar la base de datos para obtener los datos del empleado
+        const employeeUrl = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accessCode"&equalTo="${props.accessKey}"`;
+
+        const employeeResponse = await fetch(employeeUrl);
+        if (employeeResponse.ok) {
+          const employeeData = await employeeResponse.json();
+
+          // Si se encontró un empleado con el access code proporcionado, guardar el registro de horario trabajado en la base de datos junto con el ID del empleado
+          if (Object.keys(employeeData).length > 0) {
+            const employeeId = Object.keys(employeeData)[0];
+            const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules.json`;
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                employeeId: employeeId,
+                startDate: startDate.value,
+                startTime: startTime.value,
+                endDate: endDate.value,
+                endTime: endTime.value,
+              }),
+            });
+            if (response.ok) {
+              console.log('Horario registrado correctamente.');
+              startDate.value = '';
+              startTime.value = '';
+              endDate.value = '';
+              endTime.value = '';
+            } else {
+              console.error('Error al registrar el horario:', response.status);
+            }
+          } else {
+            console.error(
+              'No se encontró un empleado con el access code proporcionado.'
+            );
+          }
         } else {
-          console.error('Error al registrar el horario:', response.status);
+          console.error(
+            'Error al obtener los datos del empleado:',
+            employeeResponse.status
+          );
         }
       } catch (error) {
         console.error('Error al registrar el horario:', error);

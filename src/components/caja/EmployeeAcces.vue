@@ -36,14 +36,35 @@ export default {
     const inputEmployeeId = ref('');
     const accessGranted = ref(false);
 
-    const checkEmployeeId = () => {
-      const correctEmployeeId = '12345';
-      if (inputEmployeeId.value === correctEmployeeId) {
-        accessGranted.value = true;
-      } else {
-        alert('ID de empleado incorrecto.');
+    const checkEmployeeId = async () => {
+      const accessCode = inputEmployeeId.value;
+      const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accesscode"&equalTo="${accessCode}"`;
+
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const employeeData = await response.json();
+          if (Object.keys(employeeData).length > 0) {
+            accessGranted.value = true;
+          } else {
+            alert('ID de empleado incorrecto.');
+          }
+        } else {
+          console.error('Error al buscar empleado:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al buscar empleado:', error);
       }
     };
+
+    // const checkEmployeeId = () => {
+    //   const correctEmployeeId = '12345';
+    //   if (inputEmployeeId.value === correctEmployeeId) {
+    //     accessGranted.value = true;
+    //   } else {
+    //     alert('ID de empleado incorrecto.');
+    //   }
+    // };
 
     return {
       inputEmployeeId,
