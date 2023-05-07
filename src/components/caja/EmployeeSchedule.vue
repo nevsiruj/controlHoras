@@ -86,30 +86,46 @@
 import { ref } from 'vue';
 
 export default {
-  setup() {
-    const employeeName = ref('');
-    const date = ref('');
+  props: ['accessKey'],
+  setup(props) {
+    const startDate = ref('');
     const startTime = ref('');
+    const endDate = ref('');
     const endTime = ref('');
 
-    const addEmployeeSchedule = () => {
-      // Aquí puedes agregar la lógica para guardar los datos del horario del empleado, por ejemplo, enviarlos a una API o almacenarlos en una base de datos local.
-      console.log({
-        employeeName: employeeName.value,
-        date: date.value,
-        startTime: startTime.value,
-        endTime: endTime.value,
-      });
-      employeeName.value = '';
-      date.value = '';
-      startTime.value = '';
-      endTime.value = '';
+    const addEmployeeSchedule = async () => {
+      try {
+        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            startDate: startDate.value,
+            startTime: startTime.value,
+            endDate: endDate.value,
+            endTime: endTime.value,
+          }),
+        });
+        if (response.ok) {
+          console.log('Horario registrado correctamente.');
+          startDate.value = '';
+          startTime.value = '';
+          endDate.value = '';
+          endTime.value = '';
+        } else {
+          console.error('Error al registrar el horario:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al registrar el horario:', error);
+      }
     };
 
     return {
-      employeeName,
-      date,
+      startDate,
       startTime,
+      endDate,
       endTime,
       addEmployeeSchedule,
     };
