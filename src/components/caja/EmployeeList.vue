@@ -53,6 +53,12 @@ export default defineComponent({
           >
             Eliminar
           </button>
+          <button
+            @click="loadEmployeeSchedules(employee.id)"
+            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+          >
+            Ver horarios
+          </button>
         </div>
       </div>
     </div>
@@ -174,6 +180,32 @@ export default {
           );
         } else {
           console.error('Error al eliminar el empleado:', response.status);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async loadEmployeeSchedules(employeeKey) {
+      try {
+        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules.json?orderBy="employeeKey"&equalTo="${employeeKey}"`;
+        const response = await fetch(url);
+
+        if (response.ok) {
+          const responseData = await response.json();
+          const schedules = Object.entries(responseData).map(
+            ([id, scheduleData]) => ({
+              id,
+              ...scheduleData,
+            })
+          );
+          console.log('Schedules:', schedules);
+          // Aquí puedes hacer lo que quieras con los horarios cargados,
+          // como mostrarlos en un modal o en una nueva página.
+        } else {
+          console.error(
+            'Error al obtener los horarios del empleado:',
+            response.status
+          );
         }
       } catch (error) {
         console.error(error);

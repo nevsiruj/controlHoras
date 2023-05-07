@@ -38,8 +38,8 @@
             <label for="date" class="block mb-2">Fecha Entrada:</label>
             <input
               type="date"
-              id="date"
-              v-model="date.value"
+              id="start-date"
+              v-model="startDate"
               class="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
@@ -48,7 +48,7 @@
             <input
               type="time"
               id="start-time"
-              v-model="startTime.value"
+              v-model="startTime"
               class="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
@@ -56,8 +56,8 @@
             <label for="date" class="block mb-2">Fecha Salida:</label>
             <input
               type="date"
-              id="date"
-              v-model="date.value"
+              id="end-date"
+              v-model="endDate"
               class="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
@@ -66,7 +66,7 @@
             <input
               type="time"
               id="end-time"
-              v-model="endTime.value"
+              v-model="endTime"
               class="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 export default {
   props: ['employee'],
@@ -93,11 +93,45 @@ export default {
     const endDate = ref('');
     const endTime = ref('');
     const employeeData = ref({});
+    const employeeKey = ref('');
+
+    console.log(props.employee);
+
+    employeeKey.value = Object.keys(props.employee)[0];
+    console.log(employeeKey.value);
+    // console.log(Object.keys(props.employee)[0]);
 
     const addEmployeeSchedule = async () => {
       try {
         // Consultar la base de datos para obtener los datos del empleado
-        const employeeUrl = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accessCode"&equalTo="${props.accessKey}"`;
+        // const employeeUrl = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accesscode"&equalTo="${props.accessKey}"`;
+
+        // Validar que ningún campo esté vacío
+        if (
+          !employeeKey.value ||
+          !startDate.value ||
+          !startTime.value ||
+          !endDate.value ||
+          !endTime.value
+        ) {
+          console.error('Todos los campos son obligatorios.');
+          return;
+        }
+
+        // Validar que startDate no sea superior a endDate
+        const startDateTime = new Date(`${startDate.value}T${startTime.value}`);
+        const endDateTime = new Date(`${endDate.value}T${endTime.value}`);
+        if (startDateTime >= endDateTime) {
+          console.error(
+            'La fecha y hora de inicio no pueden ser superiores o iguales a la fecha y hora de fin.'
+          );
+          return;
+        }
+
+        // Calcular la duración del horario trabajado
+        const duration = (endDateTime - startDateTime) / 1000 / 60 / 60; // Duración en horas
+
+        const employeeUrl = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees/${employeeKey.value}.json`;
 
         const employeeResponse = await fetch(employeeUrl);
         if (employeeResponse.ok) {
@@ -113,11 +147,12 @@ export default {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                employeeId: employeeId,
+                employeeKey: employeeKey.value,
                 startDate: startDate.value,
                 startTime: startTime.value,
                 endDate: endDate.value,
                 endTime: endTime.value,
+                duration: duration,
               }),
             });
             if (response.ok) {

@@ -18,7 +18,7 @@
     </button>
 
     <div v-if="accessGranted" class="mt-8">
-      <EmployeeSchedule />
+      <EmployeeSchedule :employee="employeeData" />
     </div>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default {
   setup() {
     const inputEmployeeId = ref('');
     const accessGranted = ref(false);
+    const employeeData = ref({});
 
     const checkEmployeeId = async () => {
       const accessCode = inputEmployeeId.value;
@@ -43,11 +44,14 @@ export default {
       try {
         const response = await fetch(url);
         if (response.ok) {
-          const employeeData = await response.json();
-          if (Object.keys(employeeData).length > 0) {
+          employeeData.value = await response.json();
+
+          if (Object.keys(employeeData.value).length > 0) {
+            // console.log(employeeData.value);
             accessGranted.value = true;
           } else {
             alert('ID de empleado incorrecto.');
+            accessGranted.value = false;
           }
         } else {
           console.error('Error al buscar empleado:', response.status);
@@ -70,6 +74,7 @@ export default {
       inputEmployeeId,
       accessGranted,
       checkEmployeeId,
+      employeeData,
     };
   },
 };

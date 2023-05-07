@@ -5,7 +5,7 @@
     <!-- <ListFrutas /> -->
     
     <router-view />
-    <SideBar />
+    <!-- <SideBar /> -->
   </div>
   </div>
 </template>
