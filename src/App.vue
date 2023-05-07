@@ -3,6 +3,7 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <!-- <ListUsuarios /> -->
     <!-- <ListFrutas /> -->
+    
     <router-view />
     <SideBar />
   </div>
