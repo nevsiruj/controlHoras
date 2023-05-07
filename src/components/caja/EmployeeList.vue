@@ -42,30 +42,48 @@ export default defineComponent({
 <template>
   <div>
     <h1>Lista de empleados</h1>
-    <ul>
+    {{ employees }}
+    <!-- <ul>
       <li v-for="(employee, index) in employees" :key="index">
         {{ employee.name }} - {{ employee.position }}
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
 export default {
   name: 'Employees',
+  created() {
+    this.fetchEmployees();
+  },
   data() {
     return {
       employees: [],
     };
   },
-  async created() {
+  async fetchEmployees() {
     try {
-      const response = await axios.get(
-        'https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json'
-      );
-      this.employees = response.data;
+      const url =
+        'https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json';
+      const response = await fetch(url);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        this.employees = Object.entries(responseData).map(
+          ([id, employeeData]) => ({
+            id,
+            ...employeeData,
+          })
+        );
+      } else {
+        console.error(
+          'Error al obtener la lista de empleados:',
+          response.status
+        );
+      }
     } catch (error) {
       console.error(error);
     }
