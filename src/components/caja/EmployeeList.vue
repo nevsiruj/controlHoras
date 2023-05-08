@@ -55,7 +55,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import { firebaseUrl } from '../../config.js';
 
 export default {
   name: 'EmployeeList',
@@ -72,8 +72,7 @@ export default {
   methods: {
     async addEmployee() {
       try {
-        const url =
-          'https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json';
+        const url = `${firebaseUrl}/employees.json`;
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -102,10 +101,8 @@ export default {
       }
     },
     async fetchEmployees() {
-      console.log('Go');
       try {
-        const url =
-          'https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json';
+        const url = `${firebaseUrl}/employees.json`;
         const response = await fetch(url);
 
         if (response.ok) {
@@ -128,7 +125,7 @@ export default {
     },
     async deleteEmployee(employeeId) {
       try {
-        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees/${employeeId}.json`;
+        const url = `${firebaseUrl}/employees/${employeeId}.json`;
         const response = await fetch(url, {
           method: 'DELETE',
         });

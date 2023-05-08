@@ -8,12 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@popperjs/core": "2.11.7",
-    "@vuepic/vue-datepicker": "5.0.1",
     "autoprefixer": "10.4.14",
+    "dotenv": "^16.0.3",
     "events": "3.3.0",
-    "firebase": "9.21.0",
-    "firebase-tools": "11.30.0",
     "postcss": "8.4.23",
     "primeicons": "6.0.1",
     "vue": "3.2.47",

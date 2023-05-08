@@ -145,6 +145,8 @@
 </template>
 
 <script>
+import { firebaseUrl } from '../../config.js';
+
 import { ref, onMounted, computed } from 'vue';
 
 export default {
@@ -161,7 +163,7 @@ export default {
 
     const checkEmployeeId = async () => {
       const accessCode = inputEmployeeId.value;
-      const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accesscode"&equalTo="${accessCode}"`;
+      const url = `${firebaseUrl}/employees.json?orderBy="accesscode"&equalTo="${accessCode}"`;
 
       try {
         const response = await fetch(url);
@@ -188,7 +190,7 @@ export default {
 
     const loadSchedules = async () => {
       try {
-        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules.json?orderBy="employeeKey"&equalTo="${employeeKey.value}"`;
+        const url = `${firebaseUrl}/schedules.json?orderBy="employeeKey"&equalTo="${employeeKey.value}"`;
         const response = await fetch(url);
 
         if (response.ok) {
@@ -251,7 +253,7 @@ export default {
         return;
       }
 
-      const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules/${scheduleId}.json`;
+      const url = `${firebaseUrl}/schedules/${scheduleId}.json`;
 
       try {
         const response = await fetch(url, { method: 'DELETE' });

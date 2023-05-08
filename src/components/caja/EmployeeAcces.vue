@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { firebaseUrl } from '../../config.js';
 import { ref } from 'vue';
 import EmployeeSchedule from './EmployeeSchedule.vue';
 import EmployeeSchedule from './EmployeeSchedule.vue';
@@ -39,7 +40,7 @@ export default {
 
     const checkEmployeeId = async () => {
       const accessCode = inputEmployeeId.value;
-      const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees.json?orderBy="accesscode"&equalTo="${accessCode}"`;
+      const url = `${firebaseUrl}/employees.json?orderBy="accesscode"&equalTo="${accessCode}"`;
 
       try {
         const response = await fetch(url);

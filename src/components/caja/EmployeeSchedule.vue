@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { firebaseUrl } from '../../config.js';
 import { ref, onMounted } from 'vue';
 
 export default {
@@ -131,7 +132,7 @@ export default {
         // Calcular la duración del horario trabajado
         const duration = (endDateTime - startDateTime) / 1000 / 60 / 60; // Duración en horas
 
-        const employeeUrl = `https://controlhoras-3860e-default-rtdb.firebaseio.com/employees/${employeeKey.value}.json`;
+        const employeeUrl = `${firebaseUrl}/employees/${employeeKey.value}.json`;
 
         const employeeResponse = await fetch(employeeUrl);
         if (employeeResponse.ok) {
@@ -140,7 +141,7 @@ export default {
           // Si se encontró un empleado con el access code proporcionado, guardar el registro de horario trabajado en la base de datos junto con el ID del empleado
           if (Object.keys(employeeData).length > 0) {
             const employeeId = Object.keys(employeeData)[0];
-            const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules.json`;
+            const url = `${firebaseUrl}/schedules.json`;
             const response = await fetch(url, {
               method: 'POST',
               headers: {
