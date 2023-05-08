@@ -143,7 +143,7 @@ export default {
     },
     async loadEmployeeSchedules(employeeKey) {
       try {
-        const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules.json?orderBy="employeeKey"&equalTo="${employeeKey}"`;
+        const url = `${firebaseUrl}/schedules.json?orderBy="employeeKey"&equalTo="${employeeKey}"`;
         const response = await fetch(url);
 
         if (response.ok) {
