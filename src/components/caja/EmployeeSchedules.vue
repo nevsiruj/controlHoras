@@ -131,12 +131,12 @@
             <div v-else>
               <p>No se han registrado horarios para este empleado.</p>
             </div>
-            <button
+            <!-- <button
               @click="$emit('go-back')"
               class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
             >
               Volver a la lista de empleados
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
