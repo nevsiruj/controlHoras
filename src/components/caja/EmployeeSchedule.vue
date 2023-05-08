@@ -22,54 +22,47 @@
         class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20"
       >
         <form @submit.prevent="addEmployeeSchedule">
-          <!-- <div class="mb-5">
-            <label for="employee-name" class="block mb-2"
-              >Nombre del empleado:</label
-            >
-            <input
-              type="text"
-              id="employee-name"
-              v-model="employeeName.value"
-              placeholder="Escribe el nombre del empleado"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div> -->
-          <div class="mb-5">
-            <label for="date" class="block mb-2">Fecha Entrada:</label>
-            <input
-              type="date"
-              id="start-date"
-              v-model="startDate"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
+          <div class="grid grid-cols-2 gap-4">
+            <div class="mb-5">
+              <label for="date" class="block mb-2">Fecha Entrada:</label>
+              <input
+                type="date"
+                id="start-date"
+                v-model="startDate"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div class="mb-5">
+              <label for="start-time" class="block mb-2">Hora Entrada:</label>
+              <input
+                type="time"
+                id="start-time"
+                v-model="startTime"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
           </div>
-          <div class="mb-5">
-            <label for="start-time" class="block mb-2">Hora Entrada:</label>
-            <input
-              type="time"
-              id="start-time"
-              v-model="startTime"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
+          <div class="grid grid-cols-2 gap-4">
+            <div class="mb-5">
+              <label for="date" class="block mb-2">Fecha Salida:</label>
+              <input
+                type="date"
+                id="end-date"
+                v-model="endDate"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div class="mb-5">
+              <label for="end-time" class="block mb-2">Hora Salida:</label>
+              <input
+                type="time"
+                id="end-time"
+                v-model="endTime"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
           </div>
-          <div class="mb-5">
-            <label for="date" class="block mb-2">Fecha Salida:</label>
-            <input
-              type="date"
-              id="end-date"
-              v-model="endDate"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div class="mb-5">
-            <label for="end-time" class="block mb-2">Hora Salida:</label>
-            <input
-              type="time"
-              id="end-time"
-              v-model="endTime"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+
           <button
             type="submit"
             class="w-full px-3 py-2 bg-blue-500 text-white rounded-md"
