@@ -56,7 +56,7 @@
 
 <script>
 import { firebaseUrl } from '../../config.js';
-
+console.log(firebaseUrl);
 export default {
   name: 'EmployeeList',
   created() {
