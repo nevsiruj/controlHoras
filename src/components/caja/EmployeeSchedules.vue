@@ -10,6 +10,26 @@
       placeholder="Ingrese el ID de empleado"
       class="w-full px-3 py-2 border border-gray-300 rounded-md"
     />
+    <div class="mt-4 flex space-x-4">
+      <div>
+        <label for="start-date">Fecha de inicio:</label>
+        <input
+          type="date"
+          id="start-date"
+          v-model="startDate"
+          class="px-3 py-2 border border-gray-300 rounded-md"
+        />
+      </div>
+      <div>
+        <label for="end-date">Fecha de fin:</label>
+        <input
+          type="date"
+          id="end-date"
+          v-model="endDate"
+          class="px-3 py-2 border border-gray-300 rounded-md"
+        />
+      </div>
+    </div>
     <button
       @click="checkEmployeeId"
       class="w-full px-3 py-2 bg-blue-500 text-white rounded-md mt-4"
@@ -66,10 +86,14 @@
                       <th class="w-1/5 px-4 py-2">Fecha de salida</th>
                       <th class="w-1/5 px-4 py-2">Hora de salida</th>
                       <th class="w-1/5 px-4 py-2">Horas trabajadas</th>
+                      <th class="w-1/5 px-4 py-2"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="schedule in schedules" :key="schedule.id">
+                    <tr
+                      v-for="schedule in schedulesFiltered"
+                      :key="schedule.id"
+                    >
                       <td class="border px-4 py-2">{{ schedule.startDate }}</td>
                       <td class="border px-4 py-2">{{ schedule.startTime }}</td>
                       <td class="border px-4 py-2">{{ schedule.endDate }}</td>
@@ -79,19 +103,22 @@
                           schedule.duration ? schedule.duration.toFixed(2) : ''
                         }}
                       </td>
+                      <td class="border px-4 py-2">
+                        <button
+                          class="bg-red-500 text-white px-3 py-1 rounded-md"
+                          @click="deleteSchedule(schedule.id)"
+                        >
+                          Eliminar
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
-
                 <!-- Agregar el siguiente código debajo de la tabla de horarios -->
                 <div class="mt-4">
                   <p>
                     Total de horas trabajadas:
-                    {{
-                      employeeData.totalHours
-                        ? employeeData.totalHours.toFixed(2)
-                        : ''
-                    }}
+                    {{ totalHours ? totalHours.toFixed(2) : '' }}
                   </p>
                 </div>
               </div>
@@ -113,7 +140,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 export default {
   props: ['employeeKey', 'employeeName'],
@@ -123,6 +150,9 @@ export default {
     const schedules = ref([]);
     const employeeData = ref({});
     const employeeKey = ref('');
+    const totalHours = ref(0);
+    const startDate = ref('');
+    const endDate = ref('');
 
     const checkEmployeeId = async () => {
       const accessCode = inputEmployeeId.value;
@@ -168,12 +198,11 @@ export default {
           schedules.value = schedulesData;
 
           // Calcular el total de horas trabajadas
-          const totalHours = schedulesData.reduce((total, schedule) => {
+          const totalHoursAux = schedulesData.reduce((total, schedule) => {
             return total + (schedule.duration || 0);
           }, 0);
 
-          // Agregar el total de horas al objeto "employeeData"
-          employeeData.totalHours = totalHours;
+          totalHours.value = totalHoursAux;
           // ...
         } else {
           console.error(
@@ -188,37 +217,32 @@ export default {
       }
     };
 
+    const filteredSchedules = computed(() => {
+      return schedules.value.filter((schedule) => {
+        if (startDate.value && endDate.value) {
+          return (
+            new Date(schedule.startDate) >= new Date(startDate.value) &&
+            new Date(schedule.endDate) <= new Date(endDate.value)
+          );
+        } else {
+          return true;
+        }
+      });
+    });
+
     onMounted(() => {});
 
     return {
-      schedules,
+      schedules: filteredSchedules,
       loadSchedules,
       inputEmployeeId,
       accessGranted,
       checkEmployeeId,
       employeeData,
+      totalHours,
+      startDate,
+      endDate,
     };
   },
 };
 </script>
-
-<style>
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 8px;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-</style>
