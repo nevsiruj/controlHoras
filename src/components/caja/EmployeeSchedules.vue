@@ -30,12 +30,20 @@
         />
       </div>
     </div>
-    <button
-      @click="checkEmployeeId"
-      class="w-full px-3 py-2 bg-blue-500 text-white rounded-md mt-4"
-    >
-      Acceder
-    </button>
+    <div class="flex justify-between mt-4">
+      <button
+        @click="checkEmployeeId"
+        class="w-full m-2 px-3 py-2 bg-blue-500 text-white rounded-md"
+      >
+        Mostrar
+      </button>
+      <button
+        @click="clearData"
+        class="w-full m-2 px-3 py-2 bg-red-500 text-white rounded-md"
+      >
+        Limpiar
+      </button>
+    </div>
 
     <div v-if="accessGranted" class="mt-8">
       <div
@@ -90,10 +98,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="schedule in schedulesFiltered"
-                      :key="schedule.id"
-                    >
+                    <tr v-for="schedule in schedules" :key="schedule.id">
                       <td class="border px-4 py-2">{{ schedule.startDate }}</td>
                       <td class="border px-4 py-2">{{ schedule.startTime }}</td>
                       <td class="border px-4 py-2">{{ schedule.endDate }}</td>
@@ -230,6 +235,51 @@ export default {
       });
     });
 
+    const deleteSchedule = async (scheduleId) => {
+      const confirmDelete = confirm(
+        '¿Está seguro de que desea eliminar este horario?'
+      );
+      if (!confirmDelete) {
+        return;
+      }
+
+      const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules/${scheduleId}.json`;
+
+      try {
+        const response = await fetch(url, { method: 'DELETE' });
+        if (response.ok) {
+          const index = schedules.value.findIndex(
+            (schedule) => schedule.id === scheduleId
+          );
+          schedules.value.splice(index, 1);
+
+          // Actualizar el total de horas trabajadas
+          const totalHoursAux = schedules.value.reduce((total, schedule) => {
+            if (schedule.duration) {
+              total += schedule.duration;
+            }
+            return total;
+          }, 0);
+          totalHours.value = totalHoursAux;
+        } else {
+          console.error('Error al eliminar el horario:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al eliminar el horario:', error);
+      }
+    };
+
+    const clearData = () => {
+      inputEmployeeId.value = '';
+      accessGranted.value = false;
+      schedules.value = [];
+      employeeData.value = {};
+      employeeKey.value = '';
+      totalHours.value = 0;
+      startDate.value = '';
+      endDate.value = '';
+    };
+
     onMounted(() => {});
 
     return {
@@ -242,6 +292,8 @@ export default {
       totalHours,
       startDate,
       endDate,
+      clearData,
+      deleteSchedule,
     };
   },
 };
