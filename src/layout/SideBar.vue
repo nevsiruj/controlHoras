@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Lavadero APP</a>
+      <a class="navbar-brand" href="#">Control Horas</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -18,9 +18,7 @@
         aria-labelledby="offcanvasDarkNavbarLabel"
       >
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
-            Dark offcanvas
-          </h5>
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menu</h5>
           <button
             type="button"
             class="btn-close btn-close-white"
@@ -31,10 +29,10 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <router-link class="nav-link" to="/">Cargar horas</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <router-link class="nav-link" to="/verinfo">Ver Info</router-link>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -44,29 +42,17 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Dropdown
+                Admin
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li>
-                  <hr class="dropdown-divider" />
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <router-link class="dropdown-item" to="/employeelist"
+                    >Dashboard</router-link
+                  >
                 </li>
               </ul>
             </li>
           </ul>
-          <form class="d-flex mt-3" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-success" type="submit">Search</button>
-          </form>
         </div>
       </div>
     </div>

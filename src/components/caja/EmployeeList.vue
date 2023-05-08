@@ -1,44 +1,3 @@
-<!-- src/components/EmployeeList.vue -->
-<!-- 
-<template>
-  <div>
-    <h2 class="text-2xl font-semibold mb-4">Lista de empleados</h2>
-    <div v-if="employees.length > 0">
-      <EmployeeCard
-        v-for="employee in employees"
-        :key="employee.id"
-        :employee="employee"
-      />
-    </div>
-    <p v-else class="text-gray-600">No hay empleados registrados.</p>
-  </div>
-  
-</template>
-
-<script>
-import { defineComponent, ref, onMounted } from 'vue';
-import EmployeeCard from './EmployeeCard.vue';
-import { employeeService } from '../../composables/api/employeeService';
-
-export default defineComponent({
-  components: {
-    EmployeeCard,
-  },
-  setup() {
-    const employees = ref([]);
-
-    onMounted(async () => {
-      employees.value = await employeeService.getEmployees();
-      console.log(employees.value);
-    });
-
-    return {
-      employees,
-    };
-  },
-});
-</script> -->
-
 <template>
   <div>
     <div>
@@ -201,6 +160,7 @@ export default {
           console.log('Schedules:', schedules);
           // Aquí puedes hacer lo que quieras con los horarios cargados,
           // como mostrarlos en un modal o en una nueva página.
+          this.$router.push({ name: 'verinfo', params: { employeeKey } });
         } else {
           console.error(
             'Error al obtener los horarios del empleado:',

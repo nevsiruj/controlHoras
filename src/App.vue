@@ -3,9 +3,9 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <!-- <ListUsuarios /> -->
     <!-- <ListFrutas /> -->
-    
+      <SideBar />
     <router-view />
-    <!-- <SideBar /> -->
+  
   </div>
   </div>
 </template>

@@ -25,10 +25,15 @@ const routes = [
     component: EmployeeCard,
   },
   {
-    path: '/VerInfo',
+    path: '/verinfo',
     name: 'EmployeeSchedules',
     component: EmployeeSchedules,
   },
+  // {
+  //   path: '/verinfo/:employeeKey',
+  //   name: 'EmployeeSchedules',
+  //   component: EmployeeSchedules,
+  // },
   // { path: '/editar/:id',  component: FrutaForm, props: true },
 ];
 

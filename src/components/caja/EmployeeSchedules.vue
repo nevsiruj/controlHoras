@@ -243,6 +243,14 @@ export default {
         return;
       }
 
+      const confirmCode = prompt(
+        'Por favor, ingrese el código para confirmar la eliminación.'
+      );
+      if (confirmCode !== '1212') {
+        alert('Código incorrecto. No se ha eliminado el horario.');
+        return;
+      }
+
       const url = `https://controlhoras-3860e-default-rtdb.firebaseio.com/schedules/${scheduleId}.json`;
 
       try {
