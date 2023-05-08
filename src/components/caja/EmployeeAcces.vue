@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <label for="employee-id" class="block mb-2">ID de empleado:</label>
+    <label for="employee-id" class="block mb-2">Codigo de Acceso:</label>
     <input
       type="text"
       id="employee-id"
