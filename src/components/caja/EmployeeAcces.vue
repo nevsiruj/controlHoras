@@ -14,7 +14,10 @@
       @click="checkEmployeeId"
       class="w-full px-3 py-2 bg-blue-500 text-white rounded-md mt-4"
     >
-      Acceder
+      Cargar Horas
+    </button>
+    <button class="w-full px-3 py-2 bg-red-500 text-white rounded-md mt-4">
+      <router-link class="nav-link" to="/verinfo">Ver Horas</router-link>
     </button>
 
     <div v-if="accessGranted" class="mt-8">

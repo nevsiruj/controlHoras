@@ -43,6 +43,9 @@
       >
         Limpiar
       </button>
+      <button class="w-full m-2 px-3 py-2 bg-green-800 text-white rounded-md">
+        <router-link class="nav-link" to="/">Volver</router-link>
+      </button>
     </div>
 
     <div v-if="accessGranted" class="mt-8">
