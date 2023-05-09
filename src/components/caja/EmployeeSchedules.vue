@@ -92,6 +92,7 @@
                 <table class="table-auto w-full">
                   <thead>
                     <tr>
+                      <th class="w-1/5 px-4 py-2">Comentarios</th>
                       <th class="w-1/5 px-4 py-2">Fecha de entrada</th>
                       <th class="w-1/5 px-4 py-2">Hora de entrada</th>
                       <th class="w-1/5 px-4 py-2">Fecha de salida</th>
@@ -102,6 +103,9 @@
                   </thead>
                   <tbody>
                     <tr v-for="schedule in schedules" :key="schedule.id">
+                      <td class="border px-4 py-2">
+                        {{ schedule.comentarios }}
+                      </td>
                       <td class="border px-4 py-2">{{ schedule.startDate }}</td>
                       <td class="border px-4 py-2">{{ schedule.startTime }}</td>
                       <td class="border px-4 py-2">{{ schedule.endDate }}</td>

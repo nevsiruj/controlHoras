@@ -4,7 +4,7 @@
   <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
     <form @submit.prevent="">
       <div class="grid grid-cols-2 gap-4">
-        <div class="mb-5">
+        <div class="mb-3">
           <label for="date" class="block mb-2">Fecha Entrada:</label>
           <input
             type="date"
@@ -13,7 +13,7 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <label for="start-time" class="block mb-2">Hora Entrada:</label>
           <input
             type="time"
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="grid grid-cols-2 gap-4">
-        <div class="mb-5">
+        <div class="mb-3">
           <label for="date" class="block mb-2">Fecha Salida:</label>
           <input
             type="date"
@@ -33,7 +33,7 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <label for="end-time" class="block mb-2">Hora Salida:</label>
           <input
             type="time"
@@ -42,6 +42,25 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
+      </div>
+      <div class="grid grid-cols-1 gap-1">
+        <label for="comments" class="block mb-2">Comentarios:</label>
+        <!-- 
+        <textarea
+          class="border rounded mb-3"
+          id="comments"
+          v-model="comentarios"
+        ></textarea> -->
+        <textarea
+          class="border rounded mb-3"
+          id="comments"
+          v-model="comentarios"
+          required
+        ></textarea>
+      </div>
+
+      <div v-if="comentariosError" class="text-red-500">
+        Por favor, completa el campo de comentarios.
       </div>
 
       <button
@@ -149,6 +168,8 @@ export default {
     const endTime = ref('');
     const employeeData = ref({});
     const employeeKey = ref('');
+    const comentarios = ref('');
+    const comentariosError = ref(false);
 
     const isModalOpen = ref(false);
 
@@ -177,9 +198,11 @@ export default {
           !startDate.value ||
           !startTime.value ||
           !endDate.value ||
-          !endTime.value
+          !endTime.value ||
+          !comentarios.value // Agregamos el campo de comentarios
         ) {
           console.error('Todos los campos son obligatorios.');
+          comentariosError.value = true; // Establecemos el error en true
           return;
         }
 
@@ -218,6 +241,7 @@ export default {
                 endDate: endDate.value,
                 endTime: endTime.value,
                 duration: duration,
+                comentarios: comentarios.value,
               }),
             });
             if (response.ok) {
@@ -252,10 +276,12 @@ export default {
       startTime,
       endDate,
       endTime,
+      comentarios,
       addEmployeeSchedule,
       isModalOpen,
       openModal,
       closeModal,
+      comentariosError,
     };
   },
 };

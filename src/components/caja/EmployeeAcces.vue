@@ -1,28 +1,71 @@
 <!-- src/components/EmployeeAccess.vue -->
 
 <template>
+  <div v-if="accessGranted" class="mt-8">
+    <EmployeeSchedule :employee="employeeData" />
+  </div>
   <div>
     <label for="employee-id" class="block mb-2">Codigo de Acceso:</label>
     <input
       type="text"
       id="employee-id"
       v-model="inputEmployeeId"
-      placeholder="Ingrese el ID de empleado"
+      placeholder="Ingrese el codigo"
       class="w-full px-3 py-2 border border-gray-300 rounded-md"
     />
     <button
+      v-if="!accessGranted"
       @click="checkEmployeeId"
-      class="w-full px-3 py-2 bg-blue-500 text-white rounded-md mt-4"
+      class="
+        w-full
+        px-3
+        py-2
+        bg-blue-500
+        text-white
+        rounded-md
+        mt-4
+        hover:bg-opacity-10
+        transition-colors
+        duration-300
+      "
     >
       Cargar Horas
     </button>
-    <button class="w-full px-3 py-2 bg-red-500 text-white rounded-md mt-4">
-      <router-link class="nav-link" to="/verinfo">Ver Horas</router-link>
+    <button
+      v-if="accessGranted"
+      @click="accessGranted = false"
+      class="
+        w-full
+        px-3
+        py-2
+        bg-green-500
+        text-white
+        rounded-md
+        mt-4
+        hover:bg-opacity-10
+        transition-colors
+        duration-300
+      "
+    >
+      Volver
     </button>
 
-    <div v-if="accessGranted" class="mt-8">
-      <EmployeeSchedule :employee="employeeData" />
-    </div>
+    <button
+      class="
+        w-full
+        px-3
+        py-2
+        bg-red-500
+        text-white
+        rounded-md
+        mt-4
+        hover:bg-opacity-10
+        transition-colors
+        duration-300
+      "
+    >
+      <router-link class="nav-link" to="/verinfo">Ver Horas</router-link>
+    </button>
   </div>
 </template>
 
